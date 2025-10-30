@@ -81,6 +81,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_SERVER_DIR || '/public_html' }}
-          local-dir: my-react-app/build
+          local-dir: my-react-app/build/
           protocol: ftps
           port: ${{ secrets.FTP_PORT || '21' }}
