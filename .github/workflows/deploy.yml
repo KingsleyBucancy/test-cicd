@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          cd my-react-app
           npm install
           npm run build
 
@@ -41,7 +40,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
-          local-dir: my-react-app/build/
+          local-dir: build/
           protocol: ftps
           port: 21
 
