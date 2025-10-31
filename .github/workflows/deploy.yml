@@ -1,9 +1,10 @@
-name: Test React CI/CD
+name: 🚀 React CI/CD to cPanel
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,14 +22,35 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          cd my-react-app
           npm install
           npm run build
+
+  test:
+    name: 🧪 Run React Tests
+    runs-on: ubuntu-latest
+    needs: build  # Run only after build finishes successfully
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests
+        run: |
+          npm test -- --watchAll=false
 
   deploy:
     name: 🚀 Deploy to cPanel
     runs-on: ubuntu-latest
-    needs: build
+    needs: test  # Deploy only if tests pass
 
     steps:
       - name: Checkout code
@@ -41,6 +63,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
-          local-dir: my-react-app/build/
+          local-dir: build/
           protocol: ftps
           port: 21
+
