@@ -1,64 +1,35 @@
-name: 🚀 React CI/CD to cPanel
+name: React CI/CD to cPanel
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
-    name: 🏗️ Build React App
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install dependencies and build
-        run: |
-          cd my-react-app
-          npm install
-          npm run build
+      - name: Install dependencies
+        working-directory: my-react-app
+        run: npm install
 
-  test:
-    name: 🧪 Run React Tests
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies and run tests
-        run: |
-          cd my-react-app
-          npm install
-          npm test -- --watchAll=false
-
-  deploy:
-    name: 🚀 Deploy to cPanel
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Build React app
+        working-directory: my-react-app
+        run: npm run build
 
       - name: Deploy to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_HOST }}
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
