@@ -1,9 +1,9 @@
-name: 🚀 Build, Test & Deploy React App to cPanel via FTP
+name: 🚀 Build, Test & Deploy React App to cPanel (Production)
 
 on:
   push:
     branches:
-      - main
+      - main   # ✅ Only deploy when pushing to main branch
 
 jobs:
   build:
@@ -56,9 +56,10 @@ jobs:
           npm test -- --watchAll=false
 
   deploy:
-    name: 🚀 Deploy to cPanel via FTP
+    name: 🚀 Deploy to cPanel (Production)
     runs-on: ubuntu-latest
     needs: test
+    if: ${{ success() }}  # ✅ Safeguard: only run if previous jobs succeeded
 
     steps:
       - name: 📥 Download build artifact
@@ -77,3 +78,7 @@ jobs:
           local-dir: my-react-app/build/
           protocol: ftp
           port: 21
+
+      - name: ✅ Deployment complete
+        run: echo "✅ Production deployment successful!"
+
