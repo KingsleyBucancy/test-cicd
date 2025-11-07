@@ -3,7 +3,8 @@ name: 🚀 Build, Test & Deploy React App to cPanel (Production)
 on:
   push:
     branches:
-      - main   # ✅ Only deploy when pushing to main branch
+      - main
+      - dev
 
 jobs:
   build:
@@ -74,7 +75,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
+          server-dir: ${{ github.ref == 'refs/heads/main' && '/public_html/' || '/dev_html/' }}
           local-dir: my-react-app/build/
           protocol: ftp
           port: 21
