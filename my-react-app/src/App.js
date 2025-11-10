@@ -6,8 +6,11 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+        <h1 style={{ color: 'lime', textAlign: 'center' }}>
+          🚀 Welcome to My React CI/CD Test Page!
+        </h1>
+        <p style={{ textAlign: 'center', color: 'white' }}>
+          This change was automatically deployed from GitHub Actions 🎯s
         </p>
         <a
           className="App-link"
